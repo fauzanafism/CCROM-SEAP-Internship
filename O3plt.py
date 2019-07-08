@@ -25,15 +25,24 @@ plt.figure()
 
 dates = data.loc[data['tgl_waktu']]
 df1 = pd.DataFrame(dates, columns=['o3'])
-dfdaily = df1['o3'].resample('D').mean()
-dfdaily = pd.DataFrame()
+dfhourly = df1.o3.resample('H').mean()
+dfhourly = pd.DataFrame(dfhourly)
+dfdaily = dfhourly['o3'].resample('D').mean()
+dfdaily = pd.DataFrame(dfdaily)
+dfweekly = dfdaily['o3'].resample('W').mean()
+dfweekly = pd.DataFrame(dfweekly)
+dfmonthly = dfweekly['o3'].resample('M').mean()
+dfmonthly = pd.DataFrame(dfmonthly)
 start, end = '2017-02-01', '2017-02-28'
 
 #daily hourly
 sns.set(rc={'figure.figsize':(11,4)})
-ax=df1.loc[start:end, 'o3'].plot()
+fig, ax = plt.subplots()
+ax.plot(dfhourly.loc[start:end, 'o3'], marker = '.', linestyle='-', linewidth=0.5, label='Hourly')
+ax.plot(dfdaily.loc[start:end, 'o3'], marker = 'o', linestyle='-', label='Daily')
 ax.set_title('Kadar O3 Bogor 2016-2018')
-ax.xaxis.set_major_locator(mdates.WeekdayLocator())
+ax.xaxis.set_major_locator(mdates.DayLocator())
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d'))
 ax.set_ylabel('O3 (ppb)');
 
 """
