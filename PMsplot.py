@@ -22,6 +22,16 @@ data = data[(data['pm25'] >= 0)]
 plt.figure()
 dates = data.loc[data['tgl_waktu']]
 df1 = pd.DataFrame(dates, columns=['pm25', 'pm10'])
+kolom = ['pm25', 'pm10']
+dfhourlypm = df1[kolom].resample('H').mean()
+dfhourlypm = pd.DataFrame(dfhourlypm)
+dfdailypm = dfhourlypm[kolom].resample('D').mean()
+dfdailypm = pd.DataFrame(dfdailypm)
+dfweeklypm = dfdailypm[kolom].resample('W').mean()
+dfweeklypm = pd.DataFrame(dfweeklypm)
+dfmonthlypm = dfweeklypm[kolom].resample('M').mean()
+dfmonthlypm = pd.DataFrame(dfmonthlypm)
+
 start, end = '2016', '2018'
 session=pd.cut(dates.tgl_waktu.dt.hour,
                [0,8,16,23],
@@ -47,7 +57,91 @@ ax.xaxis.set_major_locator(mdates.MonthLocator())
 # Format x-tick labels as 3-letter month name and day number
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
 ax.legend();
-#pm10
+
+#musiman
+sns.set(rc={'figure.figsize':(15,6)})
+fig, ax = plt.subplots()
+#range tanggal
+ax.plot(dfmonthlypm.loc[start:end, 'pm25'], label='pm25 monthly')
+ax.plot(dfmonthlypm.loc[start:end, 'pm10'], label='pm10 monthly')
+ax.set_ylabel('Kadar PM (ppb)')
+ax.set_title('TREND PM BOGOR 2016-2018')
+# Set x-axis major ticks to weekly interval, on Mondays ,bisa dihapus 
+ax.xaxis.set_major_locator(mdates.MonthLocator())
+# Format x-tick labels as 3-letter month name and day number
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+ax.legend();
+
+#Januari
+sns.set(rc={'figure.figsize':(15,6)})
+fig, ax = plt.subplots()
+jan, uar= '2017-01-01', '2017-01-31'
+#range tanggal
+ax.plot(dfdailypm.loc[jan:uar, 'pm25'], label='pm2.5(µg/m3)')
+ax.plot(dfdailypm.loc[jan:uar, 'pm10'], label='pm10(µg/m3)')
+ax.set_ylabel('Kadar PM (ppb)')
+ax.set_title('PM BOGOR Januari 2017')
+# Set x-axis major ticks to weekly interval, on Mondays ,bisa dihapus 
+ax.xaxis.set_major_locator(mdates.DayLocator())
+# Format x-tick labels as 3-letter month name and day number
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+ax.legend();
+
+#Sep
+sns.set(rc={'figure.figsize':(15,6)})
+fig, ax = plt.subplots()
+#range tanggal
+ax.plot(dfdailypm.loc['2017-09', 'pm25'], label='pm2.5(µg/m3)')
+ax.plot(dfdailypm.loc['2017-09', 'pm10'], label='pm10(µg/m3)')
+ax.set_ylabel('Kadar PM (ppb)')
+ax.set_title('PM BOGOR September 2017')
+# Set x-axis major ticks to weekly interval, on Mondays ,bisa dihapus 
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.SUNDAY))
+# Format x-tick labels as 3-letter month name and day number
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+ax.legend();
+
+#Okt
+sns.set(rc={'figure.figsize':(15,6)})
+fig, ax = plt.subplots()
+#range tanggal
+ax.plot(dfdailypm.loc['2017-10', 'pm25'], label='pm2.5(µg/m3)')
+ax.plot(dfdailypm.loc['2017-10', 'pm10'], label='pm10(µg/m3)')
+ax.set_ylabel('Kadar PM (ppb)')
+ax.set_title('PM BOGOR Oktober 2017')
+# Set x-axis major ticks to weekly interval, on Mondays ,bisa dihapus 
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.SUNDAY))
+# Format x-tick labels as 3-letter month name and day number
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+ax.legend();
+
+#Nov
+sns.set(rc={'figure.figsize':(15,6)})
+fig, ax = plt.subplots()
+#range tanggal
+ax.plot(dfdailypm.loc['2017-11', 'pm25'], label='pm2.5(µg/m3)')
+ax.plot(dfdailypm.loc['2017-11', 'pm10'], label='pm10(µg/m3)')
+ax.set_ylabel('Kadar PM (ppb)')
+ax.set_title('PM BOGOR November 2017')
+# Set x-axis major ticks to weekly interval, on Mondays ,bisa dihapus 
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.SUNDAY))
+# Format x-tick labels as 3-letter month name and day number
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+ax.legend();
+
+#Des
+sns.set(rc={'figure.figsize':(15,6)})
+fig, ax = plt.subplots()
+#range tanggal
+ax.plot(dfdailypm.loc['2017-12', 'pm25'], label='pm2.5(µg/m3)')
+ax.plot(dfdailypm.loc['2017-12', 'pm10'], label='pm10(µg/m3)')
+ax.set_ylabel('Kadar PM (ppb)')
+ax.set_title('PM BOGOR Desember 2017')
+# Set x-axis major ticks to weekly interval, on Mondays ,bisa dihapus 
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.SUNDAY))
+# Format x-tick labels as 3-letter month name and day number
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+ax.legend();
 '''
 fig, ax = plt.subplots(figsize=(12,8))
 #range tanggal
